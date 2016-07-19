@@ -25,7 +25,7 @@ import java.util.Map;
  * 1. insert Rat and Zebrafish to DB, and update the getSpeciesId() method to return correct values
  * 2. alter tables to have the new, expected fields
  * 3. Need to specifically change the DOID field to allow for HP, MP, etc., may also need to udpate all current DOID
- * values to have the DOID_* prefix
+ * values to have the DOID_* prefix -- I opted to just remove DOID_ prefixes and keep HP_.. etc.
  *
  * *** note that 1-3 is in the sql_script, but make sure to double check the values for zebrafish and rat.
  *
