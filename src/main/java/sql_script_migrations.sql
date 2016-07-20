@@ -50,3 +50,6 @@ alter table COPADB_LOCAL.disease_gene add weblink varchar(200) default "";
 alter table COPADB_LOCAL.disease_gene add data_source varchar(100) default "";
 
 update COPADB_LOCAL.disease_gene set data_source = 'COPaKB' where 1=1;
+
+
+/* Note! to reverse any changes to the gene table, simple drop all rows with chromosome == NULL, or make a copy gene_old */
