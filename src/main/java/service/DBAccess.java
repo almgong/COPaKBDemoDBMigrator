@@ -267,4 +267,56 @@ public class DBAccess {
 
     }
 
+    // new, to add the missing notes field to disease_gene
+    public void updateDiseaseGeneWithNotes(GeneDisease gd, String notes) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            getConnection(); // ensure that conn is initialized
+
+            System.out.println("\nUpdating gene_disease with note...");
+            System.out.println(gd + " " + notes);
+
+            //check to see if an existing row for this ensemble id exists
+            String checkString = "select * from disease_gene where disease_id=? and ensembl_id=? and " +
+                    "notes <> ''";
+            ps = conn.prepareStatement(checkString);
+            ps.setString(1, gd.getDOID());
+            ps.setString(2, gd.getEnsembleId());
+
+            rs = ps.executeQuery();
+
+            // if there is a result, then there is a row in the DB with this ensembl+disease id pair, need to skip
+            if (rs.next() == true) {
+                System.out.println("Row exists, skipping!");
+                return;
+            }
+
+            System.out.println("Performing Update...");
+
+            // else we are good to insert
+            String updateString = "update disease_gene set notes='" + notes + "' " +
+                    "where disease_id='" + gd.getDOID() + "' " + "AND ensembl_id='" + gd.getEnsembleId() + "';";
+            ps = conn.prepareStatement(updateString);
+
+            int status = ps.executeUpdate();
+
+            System.out.println("Update with result: " + status + "!");
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 } // end class

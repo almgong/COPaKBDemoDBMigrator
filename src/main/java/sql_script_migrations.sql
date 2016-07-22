@@ -43,13 +43,21 @@ alter table COPADB_LOCAL.disease_gene drop pubmed_id, drop pubmed_title, drop pu
 
 /* last step, add new fields */
 
-alter table COPADB_LOCAL.disease add notes varchar(500) default "";
 alter table COPADB_LOCAL.disease add disease_url varchar(200) default "";
 alter table COPADB_LOCAL.disease_gene add relationship varchar(100) default "";
 alter table COPADB_LOCAL.disease_gene add weblink varchar(200) default "";
 alter table COPADB_LOCAL.disease_gene add data_source varchar(100) default "";
+alter table COPADB_LOCAL.disease_gene add notes varchar(500) default "";
 
 update COPADB_LOCAL.disease_gene set data_source = 'COPaKB' where 1=1;
 
 
 /* Note! to reverse any changes to the gene table, simple drop all rows with chromosome == NULL, or make a copy gene_old */
+
+/* POST migration script
+
+alter table COPADB_LOCAL.disease drop column notes;
+alter table COPADB_LOCAL.disease_gene add notes varchar(500) default "";
+
+
+*/
